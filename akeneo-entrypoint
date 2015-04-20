@@ -1,7 +1,10 @@
 #!/bin/sh
 
 # Create the vendor link since it isn't persisted through the docker build.
-ln -s /usr/local/lib/php/akeneo/vendor /var/www/html/vendor;
+vendor_dir=/var/www/html/vendor;
+if [ ! -f "$vendor_dir" ]; then
+    ln -s /usr/local/lib/php/akeneo/vendor $vendor_dir;
+fi;
 
 # Finally call the PHP entrypoint with whatever was passed to us.
 /usr/local/bin/entrypoint $@
