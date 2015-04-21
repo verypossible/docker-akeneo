@@ -1,10 +1,39 @@
 #!/bin/sh
 
-# Create the vendor link since it isn't persisted through the docker build.
-vendor_dir=/var/www/html/vendor;
-if [ ! -f "$vendor_dir" ]; then
-    ln -s /usr/local/lib/php/akeneo/vendor $vendor_dir;
-fi;
+owd=$(pwd);
+cd /var/www/html;
 
-# Finally call the PHP entrypoint with whatever was passed to us.
-/usr/local/bin/entrypoint $@
+# Is this the first entry?
+if [ ! -f /tmp/entered ]; then
+    touch /tmp/entered;
+
+    # Ensure that the vendor directory is pointing at the correct place.
+    rm -rf vendor;
+    ln -s /usr/local/lib/php/akeneo/vendor;
+
+    # Symlink the cache to the the /tmp directory.
+    cd app;
+    rm -rf cache;
+    mkdir /tmp/app_cache;
+    ln -s /tmp/app_cache cache;
+    cd ..;
+
+    # Install will not install anything since we should have a
+    # composer.lock file that was used to install when we built this image.
+    # We are running `coposer install` so that it will run the post install
+    # scripts with the environment variables of the current container.
+    composer install --prefer-source --no-interaction;
+
+    # Install static assets
+    php app/console pim:installer:assets;
+
+    # Warm up cache
+    php app/console cache:warmup;
+
+    # Make sure the cache is owned by the www-data user
+    chown -R www-data:www-data /tmp/app_cache;
+fi
+
+cd $owd;
+
+/usr/local/bin/entrypoint $@;

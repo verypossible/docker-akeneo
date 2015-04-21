@@ -26,5 +26,7 @@ ONBUILD COPY . /var/www/html
 ONBUILD RUN cd /var/www/html && \
             rm -rf vendor && \
             ln -s /usr/local/lib/php/akeneo/vendor vendor && \
+            rm -rf app/cache && \
+            mkdir -p app/cache && \
             composer install --prefer-source --no-interaction && \
             find vendor -type d -name .git -print0 | xargs -0 rm -rf
