@@ -32,6 +32,9 @@ if [ ! -f /tmp/entered ]; then
 
     # Make sure the cache is owned by the www-data user
     chown -R www-data:www-data /tmp/app_cache;
+
+    # Make sure the logs dir is owned by the www-data user
+    chown -R www-data:www-data app/logs;
 fi
 
 cd $owd;
