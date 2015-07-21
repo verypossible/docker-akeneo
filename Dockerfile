@@ -21,6 +21,9 @@ RUN cd /usr/local/lib/php/akeneo && \
     composer install --prefer-source --no-interaction && \
     find vendor -type d -name .git -print0 | xargs -0 rm -rf
 
+# From spartan/php Dockerfile
+ONBUILD COPY php.custom.conf.d /etc/php5/custom.conf.d
+
 ONBUILD CMD ["php5-fpm", "-F", "-O"]
 ONBUILD COPY . /var/www/html
 ONBUILD RUN cd /var/www/html && \
