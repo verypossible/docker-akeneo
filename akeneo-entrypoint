@@ -1,5 +1,7 @@
 #!/bin/sh
 
+/usr/local/bin/entrypoint;
+
 owd=$(pwd);
 cd /var/www/html;
 
@@ -39,4 +41,4 @@ fi
 
 cd $owd;
 
-/usr/local/bin/entrypoint $@;
+$@;
