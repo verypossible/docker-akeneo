@@ -2,7 +2,6 @@ FROM spartan/php:latest
 MAINTAINER Daniel Paul Searles <daniel.paul.searles@gmail.com>
 
 VOLUME /var/www/html
-VOLUME /var/run
 
 ENTRYPOINT ["/usr/local/bin/akeneo-entrypoint"]
 
