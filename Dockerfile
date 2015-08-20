@@ -17,8 +17,7 @@ COPY php-fpm/www.conf /etc/php5/fpm/pool.d/www.conf
 COPY composer.* /usr/local/lib/php/akeneo/
 
 RUN cd /usr/local/lib/php/akeneo && \
-    composer install --prefer-source --no-interaction && \
-    find vendor -type d -name .git -print0 | xargs -0 rm -rf
+    composer install --prefer-source --no-interaction
 
 # From spartan/php Dockerfile
 ONBUILD COPY php.custom.conf.d /etc/php5/custom.conf.d
@@ -30,5 +29,4 @@ ONBUILD RUN cd /var/www/html && \
             ln -s /usr/local/lib/php/akeneo/vendor vendor && \
             rm -rf app/cache && \
             mkdir -p app/cache && \
-            composer install --prefer-source --no-interaction && \
-            find vendor -type d -name .git -print0 | xargs -0 rm -rf
+            composer install --prefer-source --no-interaction
