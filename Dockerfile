@@ -30,5 +30,7 @@ ONBUILD RUN cd /var/www/html && \
             ln -s /usr/local/lib/php/akeneo/vendor vendor && \
             rm -rf app/cache && \
             mkdir -p app/cache && \
+            rm -rf app/archive && \
+            mkdir -p app/archive && \
             composer install --prefer-source --no-interaction && \
             find vendor -type d -name .git -print0 | xargs -0 rm -rf
